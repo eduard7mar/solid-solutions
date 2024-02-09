@@ -1,0 +1,24 @@
+#addRoot {
+    margin: 10px;
+}
+
+.node span {
+    margin-right: 10px;
+}
+
+.btn {
+    margin-left: 5px;
+}
+
+.btn-success,
+.btn-danger {
+    width: 30px;
+}
+
+.node {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    position: relative;
+}
