@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+
 function createNode(text, parentId) {
   const treeContainer = document.getElementById("treeContainer");
 
@@ -41,7 +42,7 @@ function createNode(text, parentId) {
     toggleBtn.textContent = isExpanded ? "►" : "▼";
   };
 
-  // Добавляем кнопку сворачивания/разворачивания перед содержимым узла
+  // Добавляю кнопку сворачивания/разворачивания перед содержимым узла
   node.prepend(toggleBtn);
 
   const addBtn = document.createElement("button");
@@ -59,15 +60,15 @@ function createNode(text, parentId) {
   removeBtn.innerHTML = "-";
   removeBtn.classList.add("btn", "btn-danger", "btn-sm", "ml-2");
   removeBtn.onclick = function () {
-    removeNodeAndChildren(nodeId); // Удаляем узел и его потомков
+    removeNodeAndChildren(nodeId); 
 
     const parentNode = parentId ? document.getElementById(parentId) : null;
     if (parentNode && !parentNode.querySelector(".node")) {
-      // Проверяем наличие дочерних узлов
+      // Проверяю наличие дочерних узлов
       const parentToggleBtn = parentNode.querySelector(".btn-toggle");
       if (parentToggleBtn) {
-        parentToggleBtn.style.visibility = "hidden"; // Скрываем кнопку-стрелку
-        parentToggleBtn.innerHTML = "►"; // Меняем обратно на горизонтальную стрелку
+        parentToggleBtn.style.visibility = "hidden"; 
+        parentToggleBtn.innerHTML = "►"; 
       }
     }
   };
@@ -82,7 +83,7 @@ function createNode(text, parentId) {
     document.getElementById(parentId).appendChild(node);
   }
 
-  saveTree(); // Сохраняем дерево после каждого изменения
+  saveTree(); 
 }
 
 
@@ -94,23 +95,25 @@ function removeNodeAndChildren(nodeId) {
   } else {
     node.remove();
   }
-  saveTree(); // Сохраняем дерево после удаления узла
+  saveTree(); 
 }
+
 
 function saveTree() {
   const treeContainer = document.getElementById("treeContainer");
-  localStorage.setItem("tree", treeContainer.innerHTML); // Сохраняем HTML дерева
+  localStorage.setItem("tree", treeContainer.innerHTML); 
 }
+
 
 function restoreTree() {
   const treeContainer = document.getElementById("treeContainer");
   const savedTree = localStorage.getItem("tree");
   if (savedTree) {
     treeContainer.innerHTML = savedTree;
-    // Переназначаем события для кнопок после восстановления дерева
+    // Переназначаю события для кнопок после восстановления дерева
     reassignEvents(treeContainer);
 
-    // Обновляем состояние кнопок-стрелок
+    // Обновляю состояние кнопок-стрелок
     updateToggleButtons(treeContainer);
   }
 }
@@ -122,16 +125,15 @@ function updateToggleButtons(parentElement) {
     const node = toggleBtn.closest(".node");
     const childNodes = node.querySelectorAll(":scope > .node");
 
-    // Устанавливаем видимость стрелок в зависимости от наличия дочерних узлов
     if (childNodes.length > 0) {
       toggleBtn.style.visibility = "visible";
-      // Проверяем, свернуты ли дочерние узлы
+      // Проверяю, свернуты ли дочерние узлы
       const isAnyChildVisible = Array.from(childNodes).some(
         (child) => child.style.display !== "none"
       );
       toggleBtn.textContent = isAnyChildVisible ? "▼" : "►";
     } else {
-      // Если дочерних элементов нет, скрываем стрелку
+      // Если дочерних элементов нет, скрываю стрелку
       toggleBtn.style.visibility = "hidden";
     }
   });
@@ -145,6 +147,11 @@ function reassignEvents(parentElement) {
   Array.from(addButtons).forEach((btn) => {
     btn.onclick = function () {
       createNode("New node", btn.closest(".node").id);
+      const toggleBtn = btn.parentElement.getElementsByClassName("btn-toggle").item(0);
+      if (toggleBtn.style.visibility === "hidden") {
+        toggleBtn.style.visibility = "visible";
+        toggleBtn.innerHTML = "▼";
+      }
     };
   });
 
@@ -167,7 +174,7 @@ function reassignEvents(parentElement) {
       btn.textContent = isExpanded ? "►" : "▼";
     };
 
-    // Показываем или скрываем кнопку toggle в зависимости от того, есть ли дочерние элементы
+    // Показываю или скрываю кнопку toggle в зависимости от того, есть ли дочерние элементы
     const hasChildNodes = btn.closest(".node").querySelector(":scope > .node");
     btn.style.visibility = hasChildNodes ? "visible" : "hidden";
   });
